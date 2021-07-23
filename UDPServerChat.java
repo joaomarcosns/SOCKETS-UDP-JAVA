@@ -27,17 +27,16 @@ public class UDPServerChat {
                 System.out.println("Aguardando mensagem");
                 aSocket.receive(receber);
                 String data = new String(receber.getData(), 0, receber.getLength());
+                //Porta 
+                portaCliente = receber.getPort();
+                InetAddress direcao = receber.getAddress();
 
                 if(data.equals("-1")) {
                     System.out.println("Seu amigo(a) finalizou o chat....");
                     aSocket.close();
                     break;
-                }else{
+                }else {
                     System.out.println("Mensagem recebida: " + data);
-                    //Porta 
-                    portaCliente = receber.getPort();
-                    InetAddress direcao = receber.getAddress();
-
                     // Mandar
                     System.out.print("Digite sua mensagem: ");
                     msg = scanner.nextLine();
