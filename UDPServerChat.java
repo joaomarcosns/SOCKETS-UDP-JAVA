@@ -9,16 +9,15 @@ public class UDPServerChat {
         String msg;
         DatagramSocket aSocket = null;
 
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, "CP850");
         System.out.println("Iniciando chat...");
         System.out.print("Digite seu nickname: ");
         nickname = scanner.nextLine();
         System.out.println("Bem vindo "+ nickname +", vamos iniciar o chat.");
-        System.out.println("Observação: para finalisar o chat digite -1");
+        System.out.printf("Observação: para finalisar o chat digite -1\n");
 
         try {
             aSocket = new DatagramSocket(6789);
-        
             while(true) {
                 byte[] buffer = new byte[65507];
 
@@ -27,6 +26,7 @@ public class UDPServerChat {
                 System.out.println("Aguardando mensagem");
                 aSocket.receive(receber);
                 String data = new String(receber.getData(), 0, receber.getLength());
+
                 //Porta 
                 portaCliente = receber.getPort();
                 InetAddress direcao = receber.getAddress();
@@ -37,12 +37,11 @@ public class UDPServerChat {
                     break;
                 }else {
                     System.out.println("Mensagem recebida: " + data);
+
                     // Mandar
                     System.out.print("Digite sua mensagem: ");
                     msg = scanner.nextLine();
-                    
                     DatagramPacket manda = new DatagramPacket(msg.getBytes(), msg.length(), direcao, portaCliente);
-
                     aSocket.send(manda);
                     if(msg.equals("-1")) {
                         System.out.println("Finalizando chat...");
@@ -50,16 +49,12 @@ public class UDPServerChat {
                         break;
                     }
                 }
-
-                
-
-                
             }
-        }catch(SocketException e) {
+        } catch(SocketException e) {
             System.out.println("Socket " + e.getMessage());
-        }catch(IOException e) {
+        } catch(IOException e) {
             System.out.println("IO " + e.getMessage());
-        }finally {
+        } finally {
             if(aSocket == null) {
                 System.out.println("Erro");
             }

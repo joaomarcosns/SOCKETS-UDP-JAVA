@@ -5,7 +5,7 @@ import java.io.*;
 public class UDPClientChat {
     public static void main(String[] args) throws Exception {
         String nickname;
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in, "CP850");
         String msg;
         DatagramSocket aSocket = null;
 
@@ -14,13 +14,10 @@ public class UDPClientChat {
         nickname = scanner.nextLine();
         System.out.println("Bem vindo "+ nickname +", vamos iniciar o chat.");
         System.out.println("Observação: para finalisar o chat digite -1");
-
         
         final int porta = 6789;
         try{
             aSocket = new DatagramSocket();
-
-
             while(true) {
                 byte[] buffer = new byte[65507];
                 
@@ -28,9 +25,7 @@ public class UDPClientChat {
                 InetAddress direcao = InetAddress.getByName("localhost");
                 System.out.print("Digite a sua menssagem: ");
                 msg = scanner.nextLine();
-
                 DatagramPacket mandar = new DatagramPacket(msg.getBytes(), msg.length(), direcao, porta);
-
                 aSocket.send(mandar);
                 
                 if(msg.equals("-1")) {
@@ -54,11 +49,11 @@ public class UDPClientChat {
                     }
                 } 
             }
-        }catch(SocketException e) {
+        } catch(SocketException e) {
             System.out.println("Socket " + e.getMessage());
-        }catch(IOException e) {
+        } catch(IOException e) {
             System.out.println("IO " + e.getMessage());
-        }finally {
+        } finally {
             if(aSocket == null) {
                 System.out.println("Erro");
             }
